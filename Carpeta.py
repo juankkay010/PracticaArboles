@@ -13,18 +13,18 @@ class Carpeta:
 
     def agregar_hijo(self, hijo):
         if self.cantidad < 4:
-            for i in [self.one, self.two, self.three, self.four]:
-                if isinstance(i, Carpeta) and isinstance(hijo, Carpeta):
-                    if i.name == hijo.name:
+            for i in [self.one, self.two, self.three, self.four]:     # Crea una lista con los hijos de la carpeta
+                if isinstance(i, Carpeta) and isinstance(hijo, Carpeta):   # Verifica que Ambos sean de la clase Carpeta
+                    if i.name == hijo.name:     # Si ambos nombres son iguales, no se puede agregar
                         return False
-                if isinstance(i, Archivo) and isinstance(hijo, Archivo):
-                    if i.name == hijo.name and i.extension == hijo.extension:
+                if isinstance(i, Archivo) and isinstance(hijo, Archivo):   # Verifica que ambos sean de la clase Archivo
+                    if i.name == hijo.name and i.extension == hijo.extension: # Si ambos nombres y extensiones son iguales, no se puede agregar
                         return False
 
             if self.one is None:
                 self.one = hijo
             elif self.two is None:
-                self.two = hijo
+                self.two = hijo       # Agrega el hijo al primer nodo disponible
             elif self.three is None:
                 self.three = hijo
             else:

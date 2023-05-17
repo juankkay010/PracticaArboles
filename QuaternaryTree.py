@@ -6,18 +6,22 @@ class QuaternaryTree:
     def __init__(self):
         self.carpeta_raiz = Carpeta("Carpeta Raiz")
 
+        # isinstance lo que hace es preguntar si un objeto es de alguna clase, es decir
+        # si el objeto carpeta_nueva es de la clase Carpeta, asi: isistance(carpeta_nueva, Carpeta)
+        # primero va el objeto y luego la clase, devuelve True o False
+
     def agregar_carpeta(self, nombre_carpeta_nueva, nombre_carpeta_madre):
-        carpeta_madre = self.buscar_carpeta(nombre_carpeta_madre, self.carpeta_raiz)
-        if carpeta_madre is not None and isinstance(carpeta_madre, Carpeta):
+        carpeta_madre = self.buscar_carpeta(nombre_carpeta_madre, self.carpeta_raiz)    # Busca la carpeta madre
+        if carpeta_madre is not None and isinstance(carpeta_madre, Carpeta):            # Verifica que si sea de la clase Carpeta
             nueva_carpeta = Carpeta(nombre_carpeta_nueva)
-            carpeta_madre.agregar_hijo(nueva_carpeta)
+            carpeta_madre.agregar_hijo(nueva_carpeta)                                   # Crea la carpeta y la agrega al primer hijo disponible
             return True
         else:
             return False
 
     def agregar_archivo(self, nombre_archivo, nombre_carpeta_madre):
         carpeta_madre = self.buscar_carpeta(nombre_carpeta_madre, self.carpeta_raiz)
-        if carpeta_madre is not None and isinstance(carpeta_madre, Carpeta):
+        if carpeta_madre is not None and isinstance(carpeta_madre, Carpeta):          # Lo mismo de arriba, pero verifica que sea de la clase Archivo
             nuevo_archivo = Archivo(nombre_archivo)
             carpeta_madre.agregar_hijo(nuevo_archivo)
             return True
