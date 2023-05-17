@@ -121,3 +121,71 @@ class QuaternaryTree:
                 self.imprimir_subarbol(nodo_actual.three, nivel + 2)
             if nodo_actual.four is not None:
                 self.imprimir_subarbol(nodo_actual.four, nivel + 2)
+
+    def retornar_carpeta_mas_pesada(self, carpeta):
+        carpeta_pesada = carpeta
+        peso_maximo = 0
+        if isinstance(carpeta, Carpeta):
+            if carpeta.one is not None and isinstance(carpeta.one, Carpeta):
+                peso = carpeta.one.calcular_peso()
+                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.one)
+                if peso > peso_maximo:
+                    carpeta_pesada = carpeta_actual
+                    peso_maximo = peso
+            if carpeta.two is not None and isinstance(carpeta.two, Carpeta):
+                peso = carpeta.two.calcular_peso()
+                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.two)
+                if peso > peso_maximo:
+                    carpeta_pesada = carpeta_actual
+                    peso_maximo = peso
+            if carpeta.three is not None and isinstance(carpeta.three, Carpeta):
+                peso = carpeta.three.calcular_peso()
+                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.three)
+                if peso > peso_maximo:
+                    carpeta_pesada = carpeta_actual
+                    peso_maximo = peso
+            if carpeta.four is not None and isinstance(carpeta.four, Carpeta):
+                peso = carpeta.four.calcular_peso()
+                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.four)
+                if peso > peso_maximo:
+                    carpeta_pesada = carpeta_actual
+                    peso_maximo = peso
+        return carpeta_pesada
+
+    def buscar_ruta(self, nombre):
+        return self._buscar_ruta(nombre, self.carpeta_raiz, "")
+
+    def _buscar_ruta(self, nombre, nodo_actual, ruta_actual):
+        if isinstance(nodo_actual, Carpeta) and nodo_actual.name == nombre:
+            return ruta_actual + "/" + nombre + "/"
+        if isinstance(nodo_actual, Archivo) and nodo_actual.name == nombre:
+            return ruta_actual + "/" + nodo_actual.name + "." + nodo_actual.extension
+        if isinstance(nodo_actual, Carpeta):
+            if nodo_actual.one is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.one, ruta_actual + "/" + nodo_actual.name)
+                if ruta is not None:
+                    return ruta
+            if nodo_actual.two is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.two, ruta_actual + "/" + nodo_actual.name)
+                if ruta is not None:
+                    return ruta
+            if nodo_actual.three is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.three, ruta_actual + "/" + nodo_actual.name)
+                if ruta is not None:
+                    return ruta
+            if nodo_actual.four is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.four, ruta_actual + "/" + nodo_actual.name)
+                if ruta is not None:
+                    return ruta
+        return None
+
+
+arbol = QuaternaryTree()
+arbol.agregar_carpeta("Carpeta 1", "Carpeta Raiz")
+arbol.agregar_carpeta("Carpeta 2", "Carpeta 1")
+arbol.agregar_archivo("aqui.json 32", "Carpeta 1")
+arbol.agregar_archivo("hola.jpg 128", "Carpeta 1")
+arbol.agregar_archivo("hola.jpg 64", "Carpeta 2")
+arbol.agregar_archivo("hola.csv 1024", "Carpeta 1")
+print(arbol.retornar_carpeta_mas_pesada(arbol.carpeta_raiz).name)
+arbol.imprimir_arbol()

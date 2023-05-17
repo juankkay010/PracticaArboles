@@ -37,3 +37,27 @@ class Carpeta:
 
     def modificar_nombre(self, nuevo_nombre):
         self.name = nuevo_nombre
+
+    def calcular_peso(self):
+        peso_total = 0
+        if self.one is not None:
+            if isinstance(self.one, Carpeta):
+                peso_total += self.one.calcular_peso()
+            else:
+                peso_total += int(self.one.peso)
+        if self.two is not None:
+            if isinstance(self.two, Carpeta):
+                peso_total += self.two.calcular_peso()
+            else:
+                peso_total += int(self.two.peso)
+        if self.three is not None:
+            if isinstance(self.three, Carpeta):
+                peso_total += self.three.calcular_peso()
+            else:
+                peso_total += int(self.three.peso)
+        if self.four is not None:
+            if isinstance(self.four, Carpeta):
+                peso_total += self.four.calcular_peso()
+            else:
+                peso_total += int(self.four.peso)
+        return peso_total
