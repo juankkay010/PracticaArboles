@@ -129,30 +129,11 @@ class QuaternaryTree:
     def retornar_carpeta_mas_pesada(self, carpeta):
         carpeta_pesada = carpeta
         peso_maximo = 0
-        if isinstance(carpeta, Carpeta):
-            if carpeta.one is not None and isinstance(carpeta.one, Carpeta):
-                peso = carpeta.one.calcular_peso()
-                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.one)
+        for hijo in [carpeta.one, carpeta.two, carpeta.three, carpeta.four]:
+            if isinstance(hijo, Carpeta) and hijo is not None:
+                peso = hijo.calcular_peso()
                 if peso > peso_maximo:
-                    carpeta_pesada = carpeta_actual
-                    peso_maximo = peso
-            if carpeta.two is not None and isinstance(carpeta.two, Carpeta):
-                peso = carpeta.two.calcular_peso()
-                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.two)
-                if peso > peso_maximo:
-                    carpeta_pesada = carpeta_actual
-                    peso_maximo = peso
-            if carpeta.three is not None and isinstance(carpeta.three, Carpeta):
-                peso = carpeta.three.calcular_peso()
-                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.three)
-                if peso > peso_maximo:
-                    carpeta_pesada = carpeta_actual
-                    peso_maximo = peso
-            if carpeta.four is not None and isinstance(carpeta.four, Carpeta):
-                peso = carpeta.four.calcular_peso()
-                carpeta_actual = self.retornar_carpeta_mas_pesada(carpeta.four)
-                if peso > peso_maximo:
-                    carpeta_pesada = carpeta_actual
+                    carpeta_pesada = hijo
                     peso_maximo = peso
         return carpeta_pesada
 
@@ -165,20 +146,20 @@ class QuaternaryTree:
         if isinstance(nodo_actual, Archivo) and nodo_actual.name == nombre:
             return ruta_actual + "/" + nodo_actual.name + "." + nodo_actual.extension
         if isinstance(nodo_actual, Carpeta):
-            if nodo_actual.one is not None:
-                ruta = self._buscar_ruta(nombre, nodo_actual.one, ruta_actual + "/" + nodo_actual.name)
-                if ruta is not None:
-                    return ruta
-            if nodo_actual.two is not None:
-                ruta = self._buscar_ruta(nombre, nodo_actual.two, ruta_actual + "/" + nodo_actual.name)
+            if nodo_actual.four is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.four, ruta_actual + "/" + nodo_actual.name)
                 if ruta is not None:
                     return ruta
             if nodo_actual.three is not None:
                 ruta = self._buscar_ruta(nombre, nodo_actual.three, ruta_actual + "/" + nodo_actual.name)
                 if ruta is not None:
                     return ruta
-            if nodo_actual.four is not None:
-                ruta = self._buscar_ruta(nombre, nodo_actual.four, ruta_actual + "/" + nodo_actual.name)
+            if nodo_actual.two is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.two, ruta_actual + "/" + nodo_actual.name)
+                if ruta is not None:
+                    return ruta
+            if nodo_actual.one is not None:
+                ruta = self._buscar_ruta(nombre, nodo_actual.one, ruta_actual + "/" + nodo_actual.name)
                 if ruta is not None:
                     return ruta
         return None
@@ -191,5 +172,12 @@ arbol.agregar_archivo("aqui.json 32", "Carpeta 1")
 arbol.agregar_archivo("hola.jpg 128", "Carpeta 1")
 arbol.agregar_archivo("hola.jpg 64", "Carpeta 2")
 arbol.agregar_archivo("hola.csv 1024", "Carpeta 1")
-print(arbol.retornar_carpeta_mas_pesada(arbol.carpeta_raiz).name)
+arbol.agregar_carpeta("Carpeta 3", "Carpeta Raiz")
+arbol.agregar_archivo("xdd.exe 2048", "Carpeta 3")
+arbol.agregar_archivo("xdd.png 2048", "Carpeta 2")
+arbol.agregar_carpeta("Carpeta 4", "Carpeta Raiz")
+arbol.agregar_archivo("xdd.png 10222", "Carpeta 4")
+print(arbol.buscar_ruta("xdd"))
+print(arbol.buscar_ruta("hola"))
+#print(arbol.retornar_carpeta_mas_pesada(arbol.carpeta_raiz).name)
 arbol.imprimir_arbol()
